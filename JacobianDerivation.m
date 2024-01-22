@@ -24,11 +24,11 @@ Force= - ( cp * (l-l0) + eta * v_n ) * n; % force calculation "linear standart w
 %%  Functions
 tt1 = simplify(jacobian(Force_el,[e_c;e_s]));
 tt2 = simplify(jacobian(Force_vi,[e_c;v_c;e_s;v_s]));
-% tt = jacobian(Force,[e_c;v_c;e_s;v_s]);
+tt = jacobian(Force,[e_c;v_c;e_s;v_s]);
 
 matlabFunction(tt1,'file','Jacobian_Force_Spring','vars',{e_c,e_s,cp,l0});
 matlabFunction(tt2,'file','Jacobian_Force_Viscous','vars',{e_c,v_c,e_s,v_s,eta});
-%matlabFunction(tt,'file','Jacobian_Force','vars',{e_c,v_c,e_s,v_s,cp,l0,eta});
+% matlabFunction(tt,'file','Jacobian_Force','vars',{e_c,v_c,e_s,v_s,cp,l0,eta});
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % clc, clear, close all;
 % clear variables
