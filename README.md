@@ -7,3 +7,4 @@ The same is true for friction forces (Force_cont); they are in the Syst function
 
 The files might be updated because the directions of bending forces are under consideration in Chrono & Matlab. For the correct solution, they should be applied in opposite directions.     
 
+ForceDerivation.m is a file to create fuctions (in the general way) interpreterning the node-node & node-rim interactions  
