@@ -23,6 +23,7 @@ Force= - ( cp * (l-l0) + eta * v_n ) * n; % force calculation "linear standart w
 
 %%  Functions
 tt1 = simplify(jacobian(Force_el,[e_c;e_s]));
+% create_File_for_Chrono(tt1,'Jacobian_Force_Spring.txt')
 tt2 = simplify(jacobian(Force_vi,[e_c;v_c;e_s;v_s]));
 % tt = jacobian(Force,[e_c;v_c;e_s;v_s]);
 
