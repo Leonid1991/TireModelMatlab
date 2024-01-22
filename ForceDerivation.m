@@ -22,7 +22,7 @@ Force_vi= - eta * v_n * n ;   % viscous force calculation
 %%  Functions
 matlabFunction(Force_el,'file','Force_Spring','vars',{e_c,e_s,cp,l0}); % forming function
 matlabFunction(Force_vi,'file','Force_Viscous','vars',{e_c,v_c,e_s,v_s,eta}); % forming function
-Force= ( cp * (l-l0) + eta * v_n ) * n; % force calculation "linear standart way"
+Force= - ( cp * (l-l0) + eta * v_n ) * n; % force calculation "linear standart way"
 matlabFunction(Force,'file','ForceSpring','vars',{e_c,v_c,e_s,v_s,cp,l0,eta}); % forming function
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 clc, clear, close all;

@@ -1,4 +1,4 @@
-function [M,F,Node_F]=Syst(y,parameters)
+function [M,F,Node_F]=Syst(y,parameters,dy)
 e0 = y(4);
 e1 = y(5);
 e2 = y(6);
@@ -36,7 +36,8 @@ t_cir = parameters{10};
 
 F=[0 0 -m*g]';
 M=[0 torsion 0]';
-[F_struc_R,F_rim1,M_rim1]=Force_struc(A,dA,Node,level,Poind_data_arr,wheel_Rim,y,kx(1:3),eta(1:3)); 
+% [F_struc_R,F_rim1,M_rim1]=Force_struc(A,dA,Node,level,Poind_data_arr,wheel_Rim,y,kx(1:3),eta(1:3)); 
+[F_struc_R,F_rim1,M_rim1]=Force_struc_dy(A,dA,Node,level,Poind_data_arr,wheel_Rim,y,kx(1:3),eta(1:3),dy); 
 [F_bend_R,F_rim2,M_rim2]=Force_bending(A,dA,Node,level,wheel_Rim,y,kx(4),eta(4),angle_c,t_cir,angle_l,t_lat); 
 F_pressure = Force_pres_fun(A,Node,level,wheel_Rim,y,p); % Farroni2019 copy
 %% Contact forces
@@ -65,8 +66,8 @@ F_cont_R=zeros(3*Node*level,1);
 % end   
 %% Assemblance of all forces
 
-Node_F=F_struc_R  + F_cont_R + F_mass_R + F_pressure  + F_bend_R;
+Node_F=F_struc_R  + F_cont_R + F_mass_R + F_pressure;%  + F_bend_R;
 % norm(F_bend_cir)
 
-F=F+F_rim1 + F_rim2;
-M=M+M_rim1 + M_rim2;
+F=F;%+F_rim1 + F_rim2;
+M=M;%+M_rim1 + M_rim2;

@@ -3,7 +3,7 @@ format short
 clear variables
 % global variables
 p = 1e3;
-g = 9.81;
+g = 0*9.81;
 pn = 0;
 mu = 0;
 % ===================== Set editable parameters ===========================
@@ -46,10 +46,10 @@ rot_ = [0; 0; 0];                  % remove rotation
 torsion=0;        % applied torion
 Fz=0;             % applied after time = tst 
 dt=0.001;
-tst=0.05;
+tst=0.1;
 tspan = 0:dt:tst;
 parameters = [mass, g, Ix_, Iy_, Iz_, Node, level, mu, pn, torsion, R, p, tst, Fz, angle_c];
-parameters = [parameters,{wheel_Rim},{F_mass_R},{Tir_M},{kx},{eta},{Poind_data_arr},{angle_l},{t_lat},{t_cir}];
+parameters = [parameters,{wheel_Rim},{F_mass_R},{Tir_M},{kx},{eta},{Poind_data_arr},{angle_l},{t_lat},{t_cir},{y0}];
 % ========================= Simulation settings ===========================
 % profile on
 tic

@@ -1,0 +1,82 @@
+function [Force_node,F,M]=Force_struc_dy(A,dA,Node,level,Poind_data_arr,wheel_Rim,y,k_ex,eta_ex,dy)
+Force_node = zeros(3*Node*level,1);
+F=zeros(3,1); % applied force  to rim
+M=zeros(3,1); % applied moment to rim
+
+ddA = zeros(3,3);
+
+%% Create circumferential springs
+for jj=1:level
+    l_cir = Poind_data_arr(jj,1);  % springs initial length in circumferential direction
+    for kk=1:Node
+
+        kl = kk + 1;          
+        if kl==Node+1
+               kl=1;
+        end   
+
+        [P_no1,v_no1,index_nod1] = position_from_y(jj,kk,Node,level,y); % current node   
+        [P_no2,v_no2,index_nod2] = position_from_y(jj,kl,Node,level,y); % next node
+
+        [dP_no1,dv_no1,~] = position_from_y(jj,kk,Node,level,dy); % current node   
+        [dP_no2,dv_no2,~] = position_from_y(jj,kl,Node,level,dy); % next node
+
+     
+        force = Jacobian_Force(P_no1,v_no1,P_no2,v_no2,k_ex(3),l_cir,eta_ex(3)) * [dP_no1;dv_no1;dP_no2;dv_no2];
+        Force_node(index_nod1) = Force_node(index_nod1) - force;
+        Force_node(index_nod2) = Force_node(index_nod2) + force;         
+    end
+end
+%% Create transversal spring
+for kk=1:Node
+
+    % Radial spring connected to the first ring
+    [P_no1,v_no1,index_nod1] = position_from_y(1,kk,Node,level,y); % current node
+    P_no2= y(1:3) + A*wheel_Rim(index_nod1); % rim corresponded point
+    v_no2= y(8:10) + dA*wheel_Rim(index_nod1); % velocity
+    l_left = Poind_data_arr(1,2);    
+
+
+    [dP_no1,dv_no1,~] = position_from_y(1,kk,Node,level,dy); % current node
+    
+    
+    force = Jacobian_Force(P_no1,v_no1,P_no2,v_no2,k_ex(1),l_left,eta_ex(1)) * [dP_no1;dv_no1;zeros(6,1)];
+        
+    Force_node(index_nod1) = Force_node(index_nod1) - force;   
+
+    F=F + force;           
+    M=M+skew( A*wheel_Rim(index_nod1) ) * force;  
+
+    % node-node springs    
+    for jj=2:level  % jl - jj 
+        l_lat = Poind_data_arr(jj,2); 
+        [P_no1,v_no1,index_nod1] = position_from_y(jj  ,kk,Node,level,y); % current node
+        [P_no2,v_no2,index_nod2] = position_from_y(jj-1,kk,Node,level,y); % side node
+        
+        [dP_no1,dv_no1,~] = position_from_y(jj,kk,Node,level,dy); % current node   
+        [dP_no2,dv_no2,~] = position_from_y(jj-1,kk,Node,level,dy); % next node
+
+
+        force = Jacobian_Force(P_no1,v_no1,P_no2,v_no2,k_ex(2),l_lat,eta_ex(2)) * [dP_no1;dv_no1;dP_no2;dv_no2];
+    
+
+        Force_node(index_nod1) = Force_node(index_nod1) - force; 
+        Force_node(index_nod2) = Force_node(index_nod2) + force; 
+    end
+
+    % Radial spring connected to the first ring
+    [P_no1,v_no1,index_nod1] = position_from_y(level,kk,Node,level,y); % current node
+    P_no2= y(1:3)+  A*wheel_Rim(index_nod1); % rim corresponded point
+    v_no2= y(8:10)+dA*wheel_Rim(index_nod1); % velocity
+    l_right = Poind_data_arr(1,2);    
+    
+    [dP_no1,dv_no1,~] = position_from_y(level,kk,Node,level,dy); % current node
+
+    force = Jacobian_Force(P_no1,v_no1,P_no2,v_no2,k_ex(1),l_right,eta_ex(1)) * [dP_no1;dv_no1;zeros(6,1)];
+    
+    Force_node(index_nod1) = Force_node(index_nod1) - force;    
+    F=F + force;           
+    M=M+skew( A*wheel_Rim(index_nod1) ) * force;  
+end    
+       
+
