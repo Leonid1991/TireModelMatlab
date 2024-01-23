@@ -1,35 +1,32 @@
 clc, clear, close all;
 clear variables
-%% Linear spring
 syms l0 real; % initial length 
-syms cp eta real; % stiffness and damping of the spring
+syms k c real; % stiffness and damping of the spring
 % i --> j
-%% Node under consideration
-e_c = sym('e_c', [3 1], 'real'); % position
-v_c = sym('v_c', [3 1], 'real'); % speed 
-%% "Side" node, which is connected to the considered node  
-e_s = sym('e_s', [3 1], 'real'); % position
-v_s = sym('v_s', [3 1], 'real'); % speed
+% Node under consideration
+pos1 = sym('pos1', [3 1], 'real'); % position
+vel1 = sym('vel1', [3 1], 'real'); % speed 
+% "Side" node, which is connected to the considered node  
+pos2 = sym('pos2', [3 1], 'real'); % position
+vel2 = sym('vel2', [3 1], 'real'); % speed
 %% Relations
-direction   = e_s-e_c;  % direction vector from the considered node to the "side node"
+direction   = pos2 - pos1;  % direction vector from the considered node to the "side node"
 l=norm(direction);      % current distance between nodes
 n = direction/l;        % normalize direction vector  
-v_relative  = v_s-v_c;  % relative velocity of the side node (where it goes from considered node)
+v_relative  = vel2-vel1;  % relative velocity of the side node (where it goes from considered node)
 v_n=dot(v_relative, n); % relative velocity in the chosen direction
 %% Standard
-Force_el=  simplify(- cp * (l-l0) * n); % elastic force calculation 
-Force_vi= simplify(- eta * v_n * n );   % viscous force calculation
-Force= - ( cp * (l-l0) + eta * v_n ) * n; % force calculation "linear standart way"
-
+Force_el=  simplify(- k * (l-l0) * n); % elastic force calculation 
+Force_vi= simplify(- c * v_n * n );   % viscous force calculation
 %%  Functions
-tt1 = simplify(jacobian(Force_el,[e_c;e_s]));
-% create_File_for_Chrono(tt1,'Jacobian_Force_Spring.txt')
-tt2 = simplify(jacobian(Force_vi,[e_c;v_c;e_s;v_s]));
-% tt = jacobian(Force,[e_c;v_c;e_s;v_s]);
+jacobianSpringStiffness = simplify(jacobian(Force_el,[pos1;pos2]));
+jacobianSpringDamping   = simplify(jacobian(Force_vi,[pos1;pos2;vel1;vel2]));
 
-matlabFunction(tt1,'file','Jacobian_Force_Spring','vars',{e_c,e_s,cp,l0});
-matlabFunction(tt2,'file','Jacobian_Force_Viscous','vars',{e_c,v_c,e_s,v_s,eta});
-%matlabFunction(tt,'file','Jacobian_Force','vars',{e_c,v_c,e_s,v_s,cp,l0,eta});
+jacobianSpringStiffness = ccode(jacobianSpringStiffness);
+jacobianSpringDamping = ccode(jacobianSpringDamping);
+
+create_File_for_Chrono(jacobianSpringStiffness,strcat('jacobianSpringStiffness', '.txt'))
+create_File_for_Chrono(jacobianSpringDamping,strcat('jacobianSpringDamping', '.txt'))
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % clc, clear, close all;
 % clear variables
