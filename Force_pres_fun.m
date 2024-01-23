@@ -31,8 +31,8 @@ for jj=1:level
            [P_kk_jr,~,~]= position_from_y(jr,kk,Node,level,y); % point data
         else % if jr==level+1
             P_kk_jr= y(1:3)+  A*wheel_Rim(index); 
-        end                
-
+        end        
+        
         Force(index) = - ForcePress(P_kr_jj,P_kl_jj,P_kk_jr,P_kk_jl,press);
     end
 end    

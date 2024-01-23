@@ -16,11 +16,9 @@ for jj=1:level
         [P_no1,v_no1,index_nod1] = position_from_y(jj,kk,Node,level,y); % current node   
         [P_no2,v_no2,index_nod2] = position_from_y(jj,kl,Node,level,y); % next node   
      
-        % force = Force_Spring(P_no1,P_no2,k_ex(3),l_cir) + Force_Viscous(P_no1,v_no1,P_no2,v_no2,eta_ex(3));
-        %force = Jacobian_Force_Spring(P_no1,P_no2,k_ex(3),l_cir)*[P_no1;-P_no2] + Jacobian_Force_Viscous(P_no1,v_no1,P_no2,v_no2,eta_ex(3))*[P_no1;v_no1;-P_no2;-v_no2]; 
+        force = Force_Spring(P_no1,P_no2,k_ex(3),l_cir) + Force_Viscous(P_no1,v_no1,P_no2,v_no2,eta_ex(3));
         
         % force = ForceSpring(P_no1,v_no1,P_no2,v_no2,k_ex(3),l_cir,eta_ex(3));
-        force = Jacobian_Force(P_no1,v_no1,P_no2,v_no2,k_ex(3),l_cir,eta_ex(3)) * [P_no1;v_no1;P_no2;v_no2];
         Force_node(index_nod1) = Force_node(index_nod1) - force;
         Force_node(index_nod2) = Force_node(index_nod2) + force;         
     end
@@ -33,11 +31,9 @@ for kk=1:Node
     P_no2= y(1:3) + A*wheel_Rim(index_nod1); % rim corresponded point
     v_no2= y(8:10) + dA*wheel_Rim(index_nod1); % velocity
     l_left = Poind_data_arr(1,2);    
-    % force = Force_Spring(P_no1,P_no2,k_ex(1),l_left) + Force_Viscous(P_no1,v_no1,P_no2,v_no2,eta_ex(1));   % kx(1) is a redial springs     
-    % force = Jacobian_Force_Spring(P_no1,P_no2,k_ex(1),l_left)*[P_no1;-P_no2] + Jacobian_Force_Viscous(P_no1,v_no1,P_no2,v_no2,eta_ex(1))*[P_no1;v_no1;-P_no2;-v_no2]; 
+    force = Force_Spring(P_no1,P_no2,k_ex(1),l_left) + Force_Viscous(P_no1,v_no1,P_no2,v_no2,eta_ex(1));   % kx(1) is a redial springs     
     
     % force = ForceSpring(P_no1,v_no1,P_no2,v_no2,k_ex(1),l_left,eta_ex(1));
-    force = Jacobian_Force(P_no1,v_no1,P_no2,v_no2,k_ex(1),l_left,eta_ex(1)) * [P_no1;v_no1;P_no2;v_no2];
         
     Force_node(index_nod1) = Force_node(index_nod1) - force;   
 
@@ -49,12 +45,10 @@ for kk=1:Node
         l_lat = Poind_data_arr(jj,2); 
         [P_no1,v_no1,index_nod1] = position_from_y(jj  ,kk,Node,level,y); % current node
         [P_no2,v_no2,index_nod2] = position_from_y(jj-1,kk,Node,level,y); % side node
-        % force = Force_Spring(P_no1,P_no2,k_ex(2),l_lat) + Force_Viscous(P_no1,v_no1,P_no2,v_no2,eta_ex(2));            
-        % force = Jacobian_Force_Spring(P_no1,P_no2,k_ex(2),l_lat)*[P_no1;-P_no2] + Jacobian_Force_Viscous(P_no1,v_no1,P_no2,v_no2,eta_ex(2))*[P_no1;v_no1;-P_no2;-v_no2]; 
-    
+        force = Force_Spring(P_no1,P_no2,k_ex(2),l_lat) + Force_Viscous(P_no1,v_no1,P_no2,v_no2,eta_ex(2));            
+        
         % force = ForceSpring(P_no1,v_no1,P_no2,v_no2,k_ex(2),l_lat,eta_ex(2));
-        force = Jacobian_Force(P_no1,v_no1,P_no2,v_no2,k_ex(2),l_lat,eta_ex(2)) * [P_no1;v_no1;P_no2;v_no2];
-    
+        
 
         Force_node(index_nod1) = Force_node(index_nod1) - force; 
         Force_node(index_nod2) = Force_node(index_nod2) + force; 
@@ -65,11 +59,9 @@ for kk=1:Node
     P_no2= y(1:3)+  A*wheel_Rim(index_nod1); % rim corresponded point
     v_no2= y(8:10)+dA*wheel_Rim(index_nod1); % velocity
     l_right = Poind_data_arr(1,2);    
-    % force = Force_Spring(P_no1,P_no2,k_ex(1),l_right) + Force_Viscous(P_no1,v_no1,P_no2,v_no2,eta_ex(1));        
-    % force = Jacobian_Force_Spring(P_no1,P_no2,k_ex(1),l_right)*[P_no1;-P_no2] + Jacobian_Force_Viscous(P_no1,v_no1,P_no2,v_no2,eta_ex(1))*[P_no1;v_no1;-P_no2;-v_no2]; 
+    force = Force_Spring(P_no1,P_no2,k_ex(1),l_right) + Force_Viscous(P_no1,v_no1,P_no2,v_no2,eta_ex(1));        
     
     % force = ForceSpring(P_no1,v_no1,P_no2,v_no2,k_ex(1),l_right,eta_ex(1));
-    force = Jacobian_Force(P_no1,v_no1,P_no2,v_no2,k_ex(1),l_right,eta_ex(1)) * [P_no1;v_no1;P_no2;v_no2];
     
 
     Force_node(index_nod1) = Force_node(index_nod1) - force;    

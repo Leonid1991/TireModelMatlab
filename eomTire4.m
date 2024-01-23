@@ -37,9 +37,6 @@ end
 
 
 dy = y - y0; % Calculate the difference between the current and previous steps
-
-
-
 %============================ solution ====================================
 if t<=tst
     [M,F,Node_F]=Syst(y,parameters,dy);

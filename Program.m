@@ -46,7 +46,7 @@ rot_ = [0; 0; 0];                  % remove rotation
 torsion=0;        % applied torion
 Fz=0;             % applied after time = tst 
 dt=0.001;
-tst=0.1;
+tst=0.03;
 tspan = 0:dt:tst;
 parameters = [mass, g, Ix_, Iy_, Iz_, Node, level, mu, pn, torsion, R, p, tst, Fz, angle_c];
 parameters = [parameters,{wheel_Rim},{F_mass_R},{Tir_M},{kx},{eta},{Poind_data_arr},{angle_l},{t_lat},{t_cir},{y0}];
