@@ -42,7 +42,7 @@ P_E = sym('P_E', [3 1], 'real');
 %% Air pressure
 syms press real; % pressure
 %% derivation
-n = cross(P_N - P_S,P_E - P_W); % with such n, it will be - in front of, because to have the n outside, it must be cross(P_E - P_W, P_N - P_S)
+n = cross(P_N - P_S,P_E - P_W);
 Force = simplify(0.5 * press * n);
 matlabFunction(Force,'file','ForcePress','vars',{P_N,P_S,P_E,P_W,press}); % forming function
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

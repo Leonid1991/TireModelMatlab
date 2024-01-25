@@ -1,4 +1,4 @@
-function Force = ForcePress(in1,in2,in3,in4,press)
+wfunction Force = ForcePress(in1,in2,in3,in4,press)
 %ForcePress
 %    Force = ForcePress(IN1,IN2,IN3,IN4,PRESS)
 
