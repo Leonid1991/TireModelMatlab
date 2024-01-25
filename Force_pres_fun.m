@@ -33,7 +33,7 @@ for jj=1:level
             P_kk_jr= y(1:3)+  A*wheel_Rim(index); 
         end        
         
-        Force(index) = - ForcePress(P_kr_jj,P_kl_jj,P_kk_jr,P_kk_jl,press);
+        Force(index) = ForcePress(P_kr_jj,P_kl_jj,P_kk_jl,P_kk_jr,press);
     end
 end    
 
