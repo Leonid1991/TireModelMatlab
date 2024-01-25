@@ -5,14 +5,21 @@ function [F_p,F_n]=Force_bend(A,t0,pos_p,pos_c,pos_n,a0,kx)
         dir_p = pos_c - pos_p;   
         dir_n = pos_n - pos_c;
         length_p = norm(dir_p);
-        length_n= norm(dir_n);
+        length_n = norm(dir_n);
 
         dir_p = dir_p / length_p;
         dir_n = dir_n / length_n;
         
         t = cross(dir_p, dir_n);
-        a = Angle_cos(pos_p,pos_c,pos_n);
+        
+        % a = real(asin(norm(t))); - doesn't work
 
+        % a =  Angle_cos(pos_p,pos_c,pos_n);
+        a = pi - real(asin(norm(t))); % it is the same, as previous one,
+        % but true for big angles
+
+        % [asind(norm(t)) Angle_cosd(pos_p,pos_c,pos_n)]
+        
         if (abs(a - a0) > 1.0e-3)
             if norm(t) < 1.0e-3
                 t = A * t0;
